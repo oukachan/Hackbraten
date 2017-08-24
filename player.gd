@@ -52,6 +52,8 @@ var bullet = preload("res://bullet.tscn")
 var floor_h_velocity = 0.0
 var enemy
 
+var live = 3
+
 
 func _integrate_forces(s):
 	var lv = s.get_linear_velocity()

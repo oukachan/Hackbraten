@@ -5,6 +5,8 @@ extends RigidBody2D
 const STATE_WALKING = 0
 const STATE_DYING = 1
 
+const dead = 0
+
 var state = STATE_WALKING
 
 var direction = -1
@@ -16,6 +18,7 @@ var WALK_SPEED = 50
 
 var bullet_class = preload("res://bullet.gd")
 
+var life = 10
 
 func _die():
 	queue_free()
@@ -45,15 +48,19 @@ func _integrate_forces(s):
 			
 			if (cc):
 				if (cc extends bullet_class and not cc.disabled):
-					set_mode(MODE_RIGID)
-					state = STATE_DYING
-					#lv = s.get_contact_local_normal(i)*400
-					s.set_angular_velocity(sign(dp.x)*33.0)
-					set_friction(1)
-					cc.disable()
+					life = life - 1
 					get_node("sound").play("hit")
-					break
-			
+					
+					if(life == 0):
+						set_mode(MODE_RIGID)
+						state = STATE_DYING
+						#lv = s.get_contact_local_normal(i)*400
+						s.set_angular_velocity(sign(dp.x)*33.0)
+						set_friction(1)
+						cc.disable()
+						get_node("sound").play("hit")
+					
+					
 			if (dp.x > 0.9):
 				wall_side = 1.0
 			elif (dp.x < -0.9):

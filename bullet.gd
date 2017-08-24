@@ -8,6 +8,7 @@ var disabled = false
 func disable():
 	if (disabled):
 		return
+	
 	get_node("anim").play("shutdown")
 	disabled = true
 
